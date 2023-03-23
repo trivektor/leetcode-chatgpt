@@ -11,8 +11,20 @@
   "dependencies": {
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
+    "evergreen-ui": "^7.1.5",
+    "isomorphic-dompurify": "^1.2.0",
+    "lodash": "^4.17.21",
     "next": "13.2.4",
+    "node-libcurl": "^3.0.0",
+    "openai": "^3.2.1",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-table": "^7.8.0",
+    "sass": "^1.59.3"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.2.7"
   }
 }
