@@ -1,8 +1,7 @@
-import fs from "fs";
-import path from "path";
 import Link from "next/link";
 import { Fragment, useState } from "react";
-import { Table } from "evergreen-ui";
+import { Button, Table } from "evergreen-ui";
+import { createClient } from "@supabase/supabase-js";
 
 export default function Questions(props) {
   const [filter, setFilter] = useState("");
@@ -26,6 +25,7 @@ export default function Questions(props) {
             value={filter}
           />
           <Table.TextHeaderCell>Difficulty</Table.TextHeaderCell>
+          <Table.TextHeaderCell></Table.TextHeaderCell>
         </Table.Head>
         <Table.Body height="100vh">
           {questions.map((question, index) => {
@@ -34,6 +34,11 @@ export default function Questions(props) {
               <Table.Row key={index}>
                 <Table.TextCell>{title}</Table.TextCell>
                 <Table.TextCell>{difficulty}</Table.TextCell>
+                <Table.TextCell>
+                  <Link href={`/questions/${titleSlug}`}>
+                    <Button appearance="primary">View</Button>
+                  </Link>
+                </Table.TextCell>
               </Table.Row>
             );
           })}
@@ -44,7 +49,12 @@ export default function Questions(props) {
 }
 
 export async function getServerSideProps(context) {
-  const questions = fs.readFileSync(path.join(process.cwd(), "questions.json"));
+  const client = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
+  const { data } = await client.from("questions").select();
+  console.log({ data });
 
-  return { props: { questions: JSON.parse(questions) } };
+  return { props: { questions: data } };
 }
