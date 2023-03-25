@@ -1,19 +1,31 @@
 import Link from "next/link";
-import { Fragment, useState } from "react";
-import { Button, Table } from "evergreen-ui";
+import { Fragment, useEffect, useState } from "react";
+import { Button, Pagination, Table } from "evergreen-ui";
 import { createClient } from "@supabase/supabase-js";
 
-export default function Questions(props) {
-  const [filter, setFilter] = useState("");
-  const onChange = (value) => {
-    setFilter(value);
-    setQuestions(
-      props.questions.filter(({ title }) =>
-        title.toLowerCase().includes(filter.toLowerCase())
-      )
-    );
+export default function Questions() {
+  const onChange = () => {};
+  const [questions, setQuestions] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+
+  const fetchQuestions = async (page, limit) => {
+    const response = await fetch(`/api/questions?page=${page}&limit=${limit}`);
+    const json = await response.json();
+
+    console.log(json);
+
+    setQuestions(json.data);
+    setTotalPages(Math.ceil(json.count / 100));
   };
-  const [questions, setQuestions] = useState(props.questions);
+  const onPageChange = (page) => {
+    setPage(page);
+    fetchQuestions(page, 100);
+  };
+
+  useEffect(() => {
+    onPageChange(1);
+  }, []);
 
   return (
     <Fragment>
@@ -22,7 +34,6 @@ export default function Questions(props) {
           <Table.SearchHeaderCell
             placeholder="Search question"
             onChange={onChange}
-            value={filter}
           />
           <Table.TextHeaderCell>Difficulty</Table.TextHeaderCell>
           <Table.TextHeaderCell></Table.TextHeaderCell>
@@ -44,17 +55,11 @@ export default function Questions(props) {
           })}
         </Table.Body>
       </Table>
+      <Pagination
+        page={page}
+        totalPages={totalPages}
+        onPageChange={onPageChange}
+      />
     </Fragment>
   );
-}
-
-export async function getServerSideProps(context) {
-  const client = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  );
-  const { data } = await client.from("questions").select();
-  console.log({ data });
-
-  return { props: { questions: data } };
 }
