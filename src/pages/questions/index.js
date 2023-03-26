@@ -53,11 +53,11 @@ export default function Questions() {
         </TableHead>
         <TableBody>
           {questions.map((question, index) => {
-            const { titleSlug, title, difficulty } = question;
+            const { id, title, difficulty } = question;
             return (
               <TableRow key={index}>
                 <TableCell>
-                  <Link underline="none" href={`/questions/${titleSlug}`}>
+                  <Link underline="none" href={`/questions/${id}`}>
                     {title}
                   </Link>
                 </TableCell>

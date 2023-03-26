@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import createSupabaseClient from "../../../../supabase_client";
 
 const getPagination = (page, size) => {
   const limit = size ? +size : 3;
@@ -9,10 +9,7 @@ const getPagination = (page, size) => {
 };
 
 export default async function handler(request, response) {
-  const client = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  );
+  const client = createSupabaseClient();
   const {
     query: { page, limit },
   } = request;
