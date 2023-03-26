@@ -9,10 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@fontsource/roboto": "^4.5.8",
+    "@mui/material": "^5.11.14",
     "@supabase/supabase-js": "^2.12.1",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
-    "evergreen-ui": "^7.1.5",
     "isomorphic-dompurify": "^1.2.0",
     "lodash": "^4.17.21",
     "next": "13.2.4",
@@ -24,8 +27,6 @@
     "sass": "^1.59.3"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.21",
-    "tailwindcss": "^3.2.7"
+    "autoprefixer": "^10.4.14"
   }
 }

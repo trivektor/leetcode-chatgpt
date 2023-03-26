@@ -1,65 +1,82 @@
-import Link from "next/link";
 import { Fragment, useEffect, useState } from "react";
-import { Button, Pagination, Table } from "evergreen-ui";
-import { createClient } from "@supabase/supabase-js";
+import {
+  Pagination,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Chip,
+  Link,
+} from "@mui/material";
+
+const difficultyLabelMappings = {
+  easy: "success",
+  medium: "warning",
+  hard: "error",
+};
 
 export default function Questions() {
-  const onChange = () => {};
   const [questions, setQuestions] = useState([]);
+  const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
 
   const fetchQuestions = async (page, limit) => {
     const response = await fetch(`/api/questions?page=${page}&limit=${limit}`);
     const json = await response.json();
 
-    console.log(json);
-
     setQuestions(json.data);
-    setTotalPages(Math.ceil(json.count / 100));
+    setCount(Math.ceil(json.count / 100));
   };
-  const onPageChange = (page) => {
-    setPage(page);
-    fetchQuestions(page, 100);
+  const onPageChange = (event, value) => {
+    setPage(value);
   };
 
   useEffect(() => {
-    onPageChange(1);
-  }, []);
+    fetchQuestions(page, 100);
+  }, [page]);
 
   return (
     <Fragment>
-      <Table>
-        <Table.Head>
-          <Table.SearchHeaderCell
-            placeholder="Search question"
-            onChange={onChange}
-          />
-          <Table.TextHeaderCell>Difficulty</Table.TextHeaderCell>
-          <Table.TextHeaderCell></Table.TextHeaderCell>
-        </Table.Head>
-        <Table.Body height="100vh">
+      <Table size="small">
+        <TableHead>
+          <TableRow sx={{ backgroundColor: "#000" }}>
+            <TableCell component="th" sx={{ color: "#fff" }}>
+              Question
+            </TableCell>
+            <TableCell component="th" sx={{ color: "#fff" }} align="right">
+              Difficulty
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {questions.map((question, index) => {
             const { titleSlug, title, difficulty } = question;
             return (
-              <Table.Row key={index}>
-                <Table.TextCell>{title}</Table.TextCell>
-                <Table.TextCell>{difficulty}</Table.TextCell>
-                <Table.TextCell>
-                  <Link href={`/questions/${titleSlug}`}>
-                    <Button appearance="primary">View</Button>
+              <TableRow key={index}>
+                <TableCell>
+                  <Link underline="none" href={`/questions/${titleSlug}`}>
+                    {title}
                   </Link>
-                </Table.TextCell>
-              </Table.Row>
+                </TableCell>
+                <TableCell align="right">
+                  <Chip
+                    size="small"
+                    sx={{ minWidth: 80 }}
+                    label={difficulty}
+                    color={difficultyLabelMappings[difficulty.toLowerCase()]}
+                  />
+                </TableCell>
+              </TableRow>
             );
           })}
-        </Table.Body>
+        </TableBody>
       </Table>
-      <Pagination
-        page={page}
-        totalPages={totalPages}
-        onPageChange={onPageChange}
-      />
+      <Stack spacing={2} sx={{ marginTop: 2, marginBottom: 2 }}>
+        <Pagination count={count} page={page} onChange={onPageChange} />
+      </Stack>
     </Fragment>
   );
 }
