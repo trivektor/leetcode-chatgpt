@@ -21,7 +21,7 @@ const ExampleInputs = ({ question }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          prompt: "What inputs could I expect for this agorithm problem:",
+          promptType: "exampleInputs",
           question: strip(question.content),
         }),
       }

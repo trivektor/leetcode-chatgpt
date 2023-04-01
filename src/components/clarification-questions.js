@@ -21,8 +21,7 @@ const ClarificationQuestions = ({ question }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          prompt:
-            "What clarification questions should I ask for this algorithm problem:",
+          promptType: "clarificationQuestions",
           question: strip(question.content),
         }),
       }
