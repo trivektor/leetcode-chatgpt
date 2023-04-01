@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import DOMPurify from "isomorphic-dompurify";
-import { useEffect, useState } from "react";
-import { Button, Typography, Drawer } from "@mui/material";
+import { Fragment, useEffect, useState } from "react";
+import { Button, Typography, Drawer, CircularProgress } from "@mui/material";
 import styled from "@emotion/styled";
 import { Container } from "@mui/system";
 import { isEmpty } from "lodash";
@@ -14,21 +14,30 @@ const Question = () => {
   const { id } = router.query;
   const [question, setQuestion] = useState({});
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchQuestion = async () => {
+      // TODO: error handling
+      setLoading(true);
       const response = await fetch(`/api/questions/${id}`);
       const json = await response.json();
 
       setQuestion(json);
+      setLoading(false);
     };
 
     fetchQuestion();
   }, [id]);
+
+  if (loading) {
+    return <CircularProgress />;
+  }
+
   const html = question.content ? DOMPurify.sanitize(question.content) : "";
 
   return (
-    <div>
+    <Fragment>
       <Typography variant="h4" sx={{ marginBottom: 3 }}>
         {question.title}
       </Typography>
@@ -56,7 +65,7 @@ const Question = () => {
           <ExampleInputs question={question} />
         </Container>
       </Drawer>
-    </div>
+    </Fragment>
   );
 };
 

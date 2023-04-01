@@ -11,6 +11,7 @@ const ExampleInputs = ({ question }) => {
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
   const onClick = async () => {
+    // TODO: error handling
     setLoading(true);
     const res = await fetch(
       `/api/questions/chatgpt?apiKey=${localStorage.getItem("chatgptApiKey")}`,

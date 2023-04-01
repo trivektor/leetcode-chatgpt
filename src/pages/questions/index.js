@@ -5,11 +5,11 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
   TableRow,
   Chip,
   Link,
+  CircularProgress,
 } from "@mui/material";
 
 const difficultyLabelMappings = {
@@ -22,13 +22,17 @@ export default function Questions() {
   const [questions, setQuestions] = useState([]);
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const fetchQuestions = async (page, limit) => {
+    // TODO: error handling
+    setLoading(true);
     const response = await fetch(`/api/questions?page=${page}&limit=${limit}`);
     const json = await response.json();
 
     setQuestions(json.data);
     setCount(Math.ceil(json.count / 100));
+    setLoading(false);
   };
   const onPageChange = (event, value) => {
     setPage(value);
@@ -37,6 +41,10 @@ export default function Questions() {
   useEffect(() => {
     fetchQuestions(page, 100);
   }, [page]);
+
+  if (loading) {
+    return <CircularProgress />;
+  }
 
   return (
     <Fragment>
