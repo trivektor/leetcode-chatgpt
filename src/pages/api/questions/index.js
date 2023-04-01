@@ -1,19 +1,14 @@
 import createSupabaseClient from "../../../../supabase_client";
 
-const getPagination = (page, size) => {
-  const limit = size ? +size : 3;
-  const from = page ? page * limit : 0;
-  const to = page ? from + size : size;
-
-  return { from, to };
-};
-
 export default async function handler(request, response) {
   const client = createSupabaseClient();
   const {
     query: { page, limit },
   } = request;
-  const { from, to } = getPagination(+page, +limit);
+  const from = (+page - 1) * +limit;
+  const to = from + +limit - 1;
+
+  console.log({ from, to });
 
   const { data, count } = await client
     .from("questions")
