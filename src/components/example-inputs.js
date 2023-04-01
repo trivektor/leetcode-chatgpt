@@ -9,7 +9,9 @@ function strip(html) {
 
 const ExampleInputs = ({ question }) => {
   const [response, setResponse] = useState("");
+  const [loading, setLoading] = useState(false);
   const onClick = async () => {
+    setLoading(true);
     const res = await fetch(
       `/api/questions/chatgpt?apiKey=${localStorage.getItem("chatgptApiKey")}`,
       {
@@ -25,18 +27,20 @@ const ExampleInputs = ({ question }) => {
     );
     const json = await res.json();
     setResponse(json.text);
+    setLoading(false);
   };
 
   return (
     <>
       <p>What inputs should I expect for this problem?</p>
       <Button
+        disabled={loading}
         variant="outlined"
         color="secondary"
         size="small"
         onClick={onClick}
       >
-        See ChatGPT's response
+        See ChatGPT{"'"}s response
       </Button>
       <Response>{response}</Response>
     </>

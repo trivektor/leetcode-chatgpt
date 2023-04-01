@@ -9,7 +9,9 @@ function strip(html) {
 
 const ClarificationQuestions = ({ question }) => {
   const [response, setResponse] = useState("");
+  const [loading, setLoading] = useState(false);
   const onClick = async () => {
+    setLoading(true);
     const res = await fetch(
       `/api/questions/chatgpt?apiKey=${localStorage.getItem("chatgptApiKey")}`,
       {
@@ -26,18 +28,21 @@ const ClarificationQuestions = ({ question }) => {
     );
     const json = await res.json();
     setResponse(json.text);
+
+    setLoading(false);
   };
 
   return (
     <>
       <p>What clarification questions can I ask about this problem?</p>
       <Button
+        disabled={loading}
         variant="outlined"
         color="secondary"
         size="small"
         onClick={onClick}
       >
-        See ChatGPT's response
+        See ChatGPT{"'"}s response
       </Button>
       <Response>{response}</Response>
     </>
