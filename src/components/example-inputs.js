@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
 import styled from "@emotion/styled";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 function strip(html) {
   let doc = new DOMParser().parseFromString(html, "text/html");
@@ -11,24 +12,32 @@ const ExampleInputs = ({ question }) => {
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
   const onClick = async () => {
-    // TODO: error handling
     setLoading(true);
-    const res = await fetch(
-      `/api/questions/chatgpt?apiKey=${localStorage.getItem("chatgptApiKey")}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          promptType: "exampleInputs",
-          question: strip(question.content),
-        }),
-      }
-    );
-    const json = await res.json();
-    setResponse(json.text);
-    setLoading(false);
+
+    try {
+      const res = await fetch(
+        `/api/questions/chatgpt?apiKey=${localStorage.getItem(
+          "chatgptApiKey"
+        )}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            promptType: "exampleInputs",
+            question: strip(question.content),
+          }),
+        }
+      );
+      const json = await res.json();
+      setResponse(json.text);
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred. Please try again later!");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

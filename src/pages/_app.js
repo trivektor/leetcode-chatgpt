@@ -13,6 +13,8 @@ import {
   IconButton,
 } from "@mui/material";
 import { Fragment } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App({ Component, pageProps }) {
   return (
@@ -21,6 +23,7 @@ export default function App({ Component, pageProps }) {
         <title>LeetCode Questions with ChatGPT Assistance</title>
       </Head>
       <CssBaseline />
+      <ToastContainer />
       <AppBar position="static" elevation={0} sx={{ background: "#000" }}>
         <Toolbar>
           <IconButton>
