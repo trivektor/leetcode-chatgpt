@@ -16,7 +16,7 @@ const ApiKey = () => {
         size="small"
         variant="filled"
         fullWidth
-        label="API Key"
+        label="ChatGPT API Key"
         onChange={onChange}
         value={value}
         helperText={

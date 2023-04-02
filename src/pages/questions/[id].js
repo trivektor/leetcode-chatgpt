@@ -49,7 +49,7 @@ const Question = () => {
           disableElevation
           onClick={() => setDrawerOpen(true)}
         >
-          Get assistence from ChatGPT
+          How ChatGPT can help you with this question
         </Button>
       )}
 

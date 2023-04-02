@@ -20,7 +20,7 @@ export default function App({ Component, pageProps }) {
   return (
     <Fragment>
       <Head>
-        <title>LeetCode Questions with ChatGPT Assistance</title>
+        <title>LeetCode Questions with ChatGPT</title>
       </Head>
       <CssBaseline />
       <ToastContainer />
@@ -31,11 +31,11 @@ export default function App({ Component, pageProps }) {
               src="https://img.icons8.com/external-flaticons-flat-flat-icons/64/null/external-code-no-code-flaticons-flat-flat-icons-2.png"
               width={38}
               height={38}
-              alt="LeetCode Questions with ChatGPT Assistance"
+              alt="LeetCode Questions with ChatGPT"
             />
           </IconButton>
           <Typography sx={{ flexGrow: 1 }}>
-            LeetCode Questions with ChatGPT assistance
+            LeetCode Questions with ChatGPT
           </Typography>
           <a href="https://www.buymeacoffee.com/trivektor" target="_blank">
             <Image
